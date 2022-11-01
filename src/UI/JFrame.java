@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 public class JFrame {
 
+    //<editor-fold defaultstate="collapsed" desc="BuildJLabel">
     public static JLabel BuildJLabel(String text, int xPos, int yPos, int xSize, int ySize, SpringLayout layout, javax.swing.JFrame frame){
 
         JLabel lbl1 = new JLabel(text);
@@ -19,7 +20,9 @@ public class JFrame {
 
         return lbl1;
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="BuildJButton">
     public static JButton BuildJButton(String text, ActionListener actionListener, int xSize, int ySize, int xPos, int yPos, SpringLayout layout, javax.swing.JFrame frame){
 
         JButton JB1 = new JButton(text);
@@ -32,7 +35,9 @@ public class JFrame {
 
         return JB1;
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="BuildJTextField">
     public static  JTextField BuildJTextField(String text, ActionListener actionListener,  int xSize, int ySize, int xPos, int yPos, SpringLayout layout, javax.swing.JFrame frame){
 
         JTextField JT1 = new JTextField(text);
@@ -44,9 +49,10 @@ public class JFrame {
         frame.add(JT1);
 
         return JT1;
-
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="BuildAJTextAreal">
     public static JTextArea BuildAJTextArea(int cols, int rows, int xPos, int yPos, SpringLayout layout, Frame frame){
 
         JTextArea myText = new JTextArea(rows,cols);
@@ -55,4 +61,5 @@ public class JFrame {
         frame.add(myText);
         return  myText;
     }
+    //</editor-fold>
 }

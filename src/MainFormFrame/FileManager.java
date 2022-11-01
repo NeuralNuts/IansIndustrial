@@ -1,10 +1,14 @@
 package MainFormFrame;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class FileManager {
 
+    //<editor-fold defaultstate="collapsed" desc="Save txtFile">
     public static void SaveToTxtFile(String filePath, WarehouseData data)
     {
         try
@@ -32,12 +36,10 @@ public class FileManager {
 
         }
     }
+    //</editor-fold>
 
-    /**
-     * Reads the details of the file at the specified file path and translates it back to usable dat in a datta model that can be used by the program
-     * @param filePath
-     * @return
-     */
+
+    //<editor-fold defaultstate="collapsed" desc="Read txtFile">
     public static WarehouseData ReadFromTxtFile(String filePath)
     {
         //Ceate new data model object
@@ -82,7 +84,9 @@ public class FileManager {
         //Returns the completed and filled data model
         return data;
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Save rafFile">
     public static void SaveToRAFFile(String filePath, WarehouseData data)
     {
         try
@@ -91,9 +95,9 @@ public class FileManager {
 
             raf.seek(0);
             raf.writeUTF(data.WarehouseName);
-            raf.seek(50);
+            raf.seek(20);
             raf.writeUTF(data.Date);
-            raf.seek(50);
+            raf.seek(20);
             raf.writeUTF(data.Time);
 
             int counter = 0;
@@ -119,12 +123,13 @@ public class FileManager {
 
         }
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Read rafFile">
     public static WarehouseData ReadFromRAFFile(String filepath)
     {
         WarehouseData data = new WarehouseData();
-        data.WarehouseLayout = new JTextField[6][10];
-
+        data.WarehouseLayout = new JTextField[18][20];
 
         try
         {
@@ -132,19 +137,19 @@ public class FileManager {
 
             raf.seek(0);
             data.WarehouseName = raf.readUTF();
-            raf.seek(50);
+            raf.seek(2);
             data.Date = raf.readUTF();
-            raf.seek(50);
+            raf.seek(3);
             data.Time = raf.readUTF();
 
             int counter = 0;
 
-            while(counter * 50 + 100 < raf.length())
+            while(counter * 18L + 20 < raf.length())
             {
-                int start = counter * 50 + 100;
+                int start = counter * 18 + 20;
                 raf.seek(start);
                 int xPos = raf.readInt();
-                raf.seek(start + 10);
+                raf.seek(start);
                 int yPos = raf.readInt();
                 raf.seek(start + 20);
                 String value = raf.readUTF();
@@ -158,6 +163,50 @@ public class FileManager {
         catch(Exception e)
         {
             return new WarehouseData();
+        }
+    }
+    //</editor-fold>
+
+    public static void SaveToRPT(String filePath, WarehouseData data) {
+
+        try
+        {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+
+            for (int y = 0; y < data.WarehouseLayout[0].length; y++)
+            {
+                for (int x = 0; x < data.WarehouseLayout.length; x++)
+                {
+
+                    int n = data.WarehouseLayout.length;
+                    writer.write(data.WarehouseLayout[x][y].getText() + ",");
+                    Boolean layout_value = Boolean.valueOf(String.valueOf(data.WarehouseLayout[x][y].getBackground()));
+                    Color layout_valueC = (data.WarehouseLayout[x][y].getBackground());
+
+                    String count = data.WarehouseLayout[x][y].getText();
+                    Color green = Color.green;
+                    Color red = Color.red;
+                    Color yellow = Color.yellow;
+
+                    if(layout_valueC.equals(green) == Boolean.TRUE.equals(layout_value)){
+
+                        layout_value + 1;
+                    }
+                    else {
+
+                        writer.write("G");
+                    }
+
+
+                }
+                writer.newLine();
+            }
+            //Closes writer when done
+            writer.close();
+        }
+        catch (Exception ex)
+        {
+
         }
     }
 }
