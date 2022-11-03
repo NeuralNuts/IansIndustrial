@@ -2,9 +2,8 @@ package MainFormFrame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.color.ColorSpace;
 import java.io.*;
-import java.util.Arrays;
-import java.util.Objects;
 
 public class FileManager {
 
@@ -38,12 +37,11 @@ public class FileManager {
     }
     //</editor-fold>
 
-
     //<editor-fold defaultstate="collapsed" desc="Read txtFile">
     public static WarehouseData ReadFromTxtFile(String filePath)
     {
         //Ceate new data model object
-        WarehouseData data = new WarehouseData();
+        WarehouseData data  = new WarehouseData();
         try
         {
             //Created buffered reader and connects to provided file location.
@@ -167,46 +165,65 @@ public class FileManager {
     }
     //</editor-fold>
 
-    public static void SaveToRPT(String filePath, WarehouseData data) {
+    public static void SaveToRPT(String filePath, WarehouseData data)  {
+        try{
 
-        try
-        {
+
             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+            int count = 0;
+            Color current_color = Color.black;
 
-            for (int y = 0; y < data.WarehouseLayout[0].length; y++)
+            for (int row = 0; row < data.WarehouseLayout[0].length; row++)
             {
-                for (int x = 0; x < data.WarehouseLayout.length; x++)
+                for (int col = 0; col < data.WarehouseLayout[row].length; col++)
                 {
+                    //writer.write(data.WarehouseLayout[row][col].getText());
+                    Color color = data.WarehouseLayout[row][col].getBackground();
+                    //JTextField[] row1 = data.WarehouseLayout[row];
 
-                    int n = data.WarehouseLayout.length;
-                    writer.write(data.WarehouseLayout[x][y].getText() + ",");
-                    Boolean layout_value = Boolean.valueOf(String.valueOf(data.WarehouseLayout[x][y].getBackground()));
-                    Color layout_valueC = (data.WarehouseLayout[x][y].getBackground());
+                    if (current_color == color){
+                        count++;
 
-                    String count = data.WarehouseLayout[x][y].getText();
-                    Color green = Color.green;
-                    Color red = Color.red;
-                    Color yellow = Color.yellow;
-
-                    if(layout_valueC.equals(green) == Boolean.TRUE.equals(layout_value)){
-
-                        layout_value + 1;
                     }
                     else {
+                        if(count > 0){
+                            writer.write(FieldColor(current_color) + "," + count + ",");
+                        }
 
-                        writer.write("G");
+                        count = 1;
+                        current_color = color;
                     }
-
-
                 }
+                writer.write(FieldColor(current_color) + "," + count);
+                count = 0;
+                current_color = Color.black;
                 writer.newLine();
             }
-            //Closes writer when done
             writer.close();
         }
-        catch (Exception ex)
-        {
+        catch (Exception e){
 
         }
     }
+    private static String FieldColor(Color b){
+        //Color b = data.getBackground();
+
+        if (b == Color.red){
+            return "R";
+        }
+        if (b == Color.green){
+            return "G";
+
+        }
+        if (b == Color.yellow){
+            return "Y";
+        }
+        return "W";
+    }
+    public static class WarehouseData {
+        public String WarehouseName;
+        public String Date;
+        public String Time;
+        public JTextField[][] WarehouseLayout;
+        }
 }

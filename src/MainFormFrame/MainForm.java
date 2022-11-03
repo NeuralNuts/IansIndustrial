@@ -4,6 +4,7 @@ import UI.JFrame;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.io.IOException;
 
 public class MainForm extends javax.swing.JFrame implements ActionListener {
@@ -552,7 +553,7 @@ public class MainForm extends javax.swing.JFrame implements ActionListener {
                 filePath += ".RAF";
             }
 
-            WarehouseData data = new WarehouseData();
+            FileManager.WarehouseData data = new FileManager.WarehouseData();
             data.WarehouseName = lblLocation.getText();
             data.Date = lblDate.getText();
             data.Time = lblTime.getText();
@@ -576,7 +577,7 @@ public class MainForm extends javax.swing.JFrame implements ActionListener {
                 return;
             }
 
-            WarehouseData data;
+            FileManager.WarehouseData data;
 
             if (filePath.toUpperCase().endsWith(".CSV")) {
                 data = FileManager.ReadFromTxtFile(filePath);
@@ -609,17 +610,15 @@ public class MainForm extends javax.swing.JFrame implements ActionListener {
             if (filePath.isEmpty()) {
                 return;
             }
-            if (filePath.toUpperCase().endsWith(".RAF") == false) {
+            if (filePath.toUpperCase().endsWith(".RPT") == false) {
                 filePath += ".RPT";
             }
 
-                WarehouseData data = new WarehouseData();
+                FileManager.WarehouseData data = new FileManager.WarehouseData();
                 data.WarehouseName = lblLocation.getText();
                 data.Date = lblDate.getText();
                 data.Time = lblTime.getText();
                 data.WarehouseLayout = board;
-
-
 
                 FileManager.SaveToRPT(filePath, data);
             }
