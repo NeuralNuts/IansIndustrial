@@ -1,13 +1,15 @@
 package MainFormFrame;
 
+//<editor-fold defaultstate="collapsed" desc="Imports">
 import javax.swing.*;
 import java.awt.*;
-import java.awt.color.ColorSpace;
 import java.io.*;
+import java.util.Arrays;
+//</editor-fold>
 
 public class FileManager {
 
-    //<editor-fold defaultstate="collapsed" desc="Save txtFile">
+    //<editor-fold defaultstate="collapsed" desc="Save to TXT File">
     public static void SaveToTxtFile(String filePath, WarehouseData data)
     {
         try
@@ -37,7 +39,7 @@ public class FileManager {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Read txtFile">
+    //<editor-fold defaultstate="collapsed" desc="Read TXT file">
     public static WarehouseData ReadFromTxtFile(String filePath)
     {
         //Ceate new data model object
@@ -84,7 +86,7 @@ public class FileManager {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Save rafFile">
+    //<editor-fold defaultstate="collapsed" desc="Save to RAF file">
     public static void SaveToRAFFile(String filePath, WarehouseData data)
     {
         try
@@ -123,7 +125,7 @@ public class FileManager {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Read rafFile">
+    //<editor-fold defaultstate="collapsed" desc="Read RAF file">
     public static WarehouseData ReadFromRAFFile(String filepath)
     {
         WarehouseData data = new WarehouseData();
@@ -142,7 +144,7 @@ public class FileManager {
 
             int counter = 0;
 
-            while(counter * 18L + 20 < raf.length())
+            while(counter * 18l + 20 < raf.length())
             {
                 int start = counter * 18 + 20;
                 raf.seek(start);
@@ -165,21 +167,18 @@ public class FileManager {
     }
     //</editor-fold>
 
-    public static void SaveToRPT(String filePath, WarehouseData data)  {
+    //<editor-fold defaultstate="collapsed" desc="Save to RPT file">
+    public static void SaveToRPTFile(String filePath, WarehouseData data)  {
         try{
-
 
             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
             int count = 0;
             Color current_color = Color.black;
 
-            for (int row = 0; row < data.WarehouseLayout[0].length; row++)
-            {
-                for (int col = 0; col < data.WarehouseLayout[row].length; col++)
-                {
-                    //writer.write(data.WarehouseLayout[row][col].getText());
+            for (int row = 0; row < data.WarehouseLayout[0].length; row++){
+                for (int col = 0; col < data.WarehouseLayout[row].length; col++){
+
                     Color color = data.WarehouseLayout[row][col].getBackground();
-                    //JTextField[] row1 = data.WarehouseLayout[row];
 
                     if (current_color == color){
                         count++;
@@ -187,14 +186,14 @@ public class FileManager {
                     }
                     else {
                         if(count > 0){
-                            writer.write(FieldColor(current_color) + "," + count + ",");
+                            writer.write(TextFieldColorGetter(current_color) + "," + count + ",");
                         }
 
                         count = 1;
                         current_color = color;
                     }
                 }
-                writer.write(FieldColor(current_color) + "," + count);
+                writer.write(TextFieldColorGetter(current_color) + "," + count);
                 count = 0;
                 current_color = Color.black;
                 writer.newLine();
@@ -202,10 +201,40 @@ public class FileManager {
             writer.close();
         }
         catch (Exception e){
-
         }
     }
-    private static String FieldColor(Color b){
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Save to DAT file">
+    public static void SaveToDATFile(String filePath, WarehouseData data){
+
+       try {
+
+           BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+           int cords=0;
+           Color current_color = Color.BLACK;
+           for(int row = 0; row < data.WarehouseLayout[0].length;row++){
+               for (int col = 0; col < data.WarehouseLayout.length; col++){
+
+                   Color color = data.WarehouseLayout[row][col].getBackground();
+
+                   if (color == current_color){
+
+                       writer.write(TextFieldColorGetter(current_color) + data.WarehouseLayout[row][col]);
+                   }
+               }
+               //writer.write(TextFieldColorGetter(current_color) + Arrays.toString(data.WarehouseLayout[row]));
+               writer.newLine();
+           }
+           writer.close();
+       }
+       catch (Exception e){
+       }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Text field color getter">
+    private static String TextFieldColorGetter(Color b){
         //Color b = data.getBackground();
 
         if (b == Color.red){
@@ -220,10 +249,14 @@ public class FileManager {
         }
         return "W";
     }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Warehouse data">
     public static class WarehouseData {
         public String WarehouseName;
         public String Date;
         public String Time;
         public JTextField[][] WarehouseLayout;
         }
+    //</editor-fold>
 }

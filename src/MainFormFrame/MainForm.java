@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class MainForm extends javax.swing.JFrame implements ActionListener {
 
@@ -23,7 +24,7 @@ public class MainForm extends javax.swing.JFrame implements ActionListener {
 
     JTextField txtRecordLevel;
 
-    JButton btnClose, btnLoadFile, btnSulphurDioxide, btnNitrogenDioxide, btnCarbonMonoxide, btnObstructions, btnExport, btnDangerous, btnConcerning, btnAcceptable, btnExportRPT;
+    JButton btnClose, btnLoadFile, btnSulphurDioxide, btnNitrogenDioxide, btnCarbonMonoxide, btnObstructions, btnExport, btnDangerous, btnConcerning, btnAcceptable, btnExportRPT, btnExportDAT;
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="UI">
@@ -94,36 +95,40 @@ public class MainForm extends javax.swing.JFrame implements ActionListener {
         btnAcceptable.setOpaque(true);
 
         btnSulphurDioxide = JFrame.BuildJButton("Sulphur Dioxide", this, 137, 25, 320, 130, layout, this);
-        btnSulphurDioxide.setBackground(new Color(255, 0, 0));
-        btnSulphurDioxide.setForeground(Color.YELLOW);
+        btnSulphurDioxide.setBackground(new Color(19, 179, 231));
+        btnSulphurDioxide.setForeground(Color.WHITE);
 
         btnNitrogenDioxide = JFrame.BuildJButton("Nitrogen Dioxide", this, 137, 25, 350, 130, layout, this);
-        btnNitrogenDioxide.setBackground(new Color(255, 0, 0));
-        btnNitrogenDioxide.setForeground(Color.YELLOW);
+        btnNitrogenDioxide.setBackground(new Color(19, 179, 231));
+        btnNitrogenDioxide.setForeground(Color.WHITE);
 
         btnCarbonMonoxide = JFrame.BuildJButton("Carbon Monoxide", this, 137, 25, 380, 130, layout, this);
-        btnCarbonMonoxide.setBackground(new Color(255, 0, 0));
-        btnCarbonMonoxide.setForeground(Color.YELLOW);
+        btnCarbonMonoxide.setBackground(new Color(19, 179, 231));
+        btnCarbonMonoxide.setForeground(Color.WHITE);
 
         btnObstructions = JFrame.BuildJButton("Obstructions", this, 137, 25, 410, 130, layout, this);
-        btnObstructions.setBackground(new Color(255, 0, 0));
-        btnObstructions.setForeground(Color.YELLOW);
+        btnObstructions.setBackground(new Color(19, 179, 231));
+        btnObstructions.setForeground(Color.WHITE);
 
         btnLoadFile = JFrame.BuildJButton("Load File", this, 137, 25, 510, 130, layout, this);
-        btnLoadFile.setBackground(new Color(255, 0, 0));
-        btnLoadFile.setForeground(Color.YELLOW);
+        btnLoadFile.setBackground(new Color(19, 179, 231));
+        btnLoadFile.setForeground(Color.WHITE);
 
         btnExport = JFrame.BuildJButton("Export RAF", this, 109, 30, 510, 730, layout, this);
-        btnExport.setBackground(new Color(255, 0, 0));
-        btnExport.setForeground(Color.YELLOW);
+        btnExport.setBackground(new Color(19, 179, 231));
+        btnExport.setForeground(Color.WHITE);
 
-        btnExportRPT = JFrame.BuildJButton("Export DAT", this, 109, 30, 510, 600, layout, this);
-        btnExportRPT.setBackground(new Color(255, 0, 0));
-        btnExportRPT.setForeground(Color.YELLOW);
+        btnExportRPT = JFrame.BuildJButton("Export RPT", this, 109, 30, 510, 610, layout, this);
+        btnExportRPT.setBackground(new Color(19, 179, 231));
+        btnExportRPT.setForeground(Color.WHITE);
+
+        btnExportDAT = JFrame.BuildJButton("Export DAT", this, 109, 30, 510, 490, layout, this);
+        btnExportDAT.setBackground(new Color(19, 179, 231));
+        btnExportDAT.setForeground(Color.WHITE);
 
         btnClose = JFrame.BuildJButton("Close", this, 109, 30, 510, 850, layout, this);
-        btnClose.setBackground(new Color(255, 0, 0));
-        btnClose.setForeground(Color.YELLOW);
+        btnClose.setBackground(new Color(19, 179, 231));
+        btnClose.setForeground(Color.WHITE);
 
         setVisible(true);
     }
@@ -176,30 +181,18 @@ public class MainForm extends javax.swing.JFrame implements ActionListener {
         JOptionPane.showMessageDialog(null, InfoMessage, "Warning!" + TitleBar, JOptionPane.WARNING_MESSAGE);
     }
 
-    public void MouseEntered(MouseEvent evt) {
+    public void mouseClicked(MouseEvent e){
+        for (int x = 0; x < board.length; x++){
+            for (int y = 0; y < board[x].length; y++){
 
-        int y;
-        int x;
-        for (x = 0; x < board.length; x++) {
-            for (y = 0; y < board[x].length; y++) {
+                if (e.getClickCount() == MouseEvent.MOUSE_CLICKED){
 
-                String text_value = board[x][y].getText();
-                board[y][x].addMouseListener(new MouseAdapter() {
-
-                    boolean yes;
-
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-
-                        //if (mouseClicked(){
-
-                        //txtRecordLevel.setText(text_value);
-                        //}
-                    }
-                });
+                    txtRecordLevel.setText(board[x][y].getText());
+                }
             }
         }
     }
+
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Buttons">
@@ -561,6 +554,7 @@ public class MainForm extends javax.swing.JFrame implements ActionListener {
 
             FileManager.SaveToRAFFile(filePath, data);
         }
+
         if (e.getSource() == btnLoadFile) {
 
             FileDialog file_dialog = new FileDialog(this, "Choose file to load.", FileDialog.LOAD);
@@ -599,7 +593,7 @@ public class MainForm extends javax.swing.JFrame implements ActionListener {
             }
         }
 
-        if (e.getSource() == btnExportRPT){
+        if (e.getSource() == btnExportRPT) {
 
             FileDialog file = new FileDialog(this, "Choose file location for save", FileDialog.SAVE);
             file.setDirectory("C:\\");
@@ -614,15 +608,38 @@ public class MainForm extends javax.swing.JFrame implements ActionListener {
                 filePath += ".RPT";
             }
 
-                FileManager.WarehouseData data = new FileManager.WarehouseData();
-                data.WarehouseName = lblLocation.getText();
-                data.Date = lblDate.getText();
-                data.Time = lblTime.getText();
-                data.WarehouseLayout = board;
+            FileManager.WarehouseData data = new FileManager.WarehouseData();
+            data.WarehouseName = lblLocation.getText();
+            data.Date = lblDate.getText();
+            data.Time = lblTime.getText();
+            data.WarehouseLayout = board;
 
-                FileManager.SaveToRPT(filePath, data);
+            FileManager.SaveToRPTFile(filePath, data);
+        }
+
+        if (e.getSource() == btnExportDAT){
+
+            FileDialog file = new FileDialog(this, "Choose file location for save", FileDialog.SAVE);
+            file.setDirectory("C:\\");
+            file.setFile(".DAT");
+            file.setVisible(true);
+            String filePath = file.getDirectory() + file.getFile();
+
+            if (filePath.isEmpty()) {
+                return;
             }
+            if (filePath.toUpperCase().endsWith(".DAT") == false) {
+                filePath += ".DAT";
+            }
+
+            FileManager.WarehouseData data = new FileManager.WarehouseData();
+            data.WarehouseName = lblLocation.getText();
+            data.Date = lblDate.getText();
+            data.Time = lblTime.getText();
+            data.WarehouseLayout = board;
+
+            FileManager.SaveToDATFile(filePath, data);
         }
     }
-
-    //</editor-fold>
+}
+//</editor-fold>
