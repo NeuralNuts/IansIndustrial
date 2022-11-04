@@ -25,7 +25,8 @@ public class FileManager {
             {
                 for (int x = 0; x < data.WarehouseLayout.length; x++)
                 {
-                    writer.write(data.WarehouseLayout[x][y].getText() + ",");
+
+                    writer.write(data.WarehouseLayout[x][y].getText());
                 }
                 writer.newLine();
             }
@@ -207,29 +208,33 @@ public class FileManager {
 
     //<editor-fold defaultstate="collapsed" desc="Save to DAT file">
     public static void SaveToDATFile(String filePath, WarehouseData data){
+        try{
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+            StringBuilder builder = new StringBuilder();
 
-       try {
+            int cords =0;
+            Color current_color = Color.black;
+            for (int i = 0; i < data.WarehouseLayout[0].length; i++){
 
-           BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
-           int cords=0;
-           Color current_color = Color.BLACK;
-           for(int row = 0; row < data.WarehouseLayout[0].length;row++){
-               for (int col = 0; col < data.WarehouseLayout.length; col++){
+                int x = i % data.WarehouseLayout[i].length;
+                int y = i / data.WarehouseLayout[i].length;
+                Color color = data.WarehouseLayout[x][y].getBackground();
 
-                   Color color = data.WarehouseLayout[row][col].getBackground();
+                if(current_color != color){
+                    builder.append(x);
+                    builder.append(",");
+                    builder.append(y);
+                    builder.append(",");
+                    builder.append("\r\n");
+                    builder.append(TextFieldColorGetter(color));
+                }
+            }
+            writer.write(builder.toString());
+            writer.close();
+        }
+        catch (Exception e){
+        }
 
-                   if (color == current_color){
-
-                       writer.write(TextFieldColorGetter(current_color) + data.WarehouseLayout[row][col]);
-                   }
-               }
-               //writer.write(TextFieldColorGetter(current_color) + Arrays.toString(data.WarehouseLayout[row]));
-               writer.newLine();
-           }
-           writer.close();
-       }
-       catch (Exception e){
-       }
     }
     //</editor-fold>
 
@@ -242,7 +247,6 @@ public class FileManager {
         }
         if (b == Color.green){
             return "G";
-
         }
         if (b == Color.yellow){
             return "Y";

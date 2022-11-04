@@ -1,5 +1,6 @@
 package MainFormFrame;
 
+//<editor-fold defaultstate="collapsed" desc="Imports">
 import UI.JFrame;
 import javax.swing.*;
 import java.awt.*;
@@ -7,6 +8,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+//</editor-fold>
 
 public class MainForm extends javax.swing.JFrame implements ActionListener {
 
@@ -135,7 +137,7 @@ public class MainForm extends javax.swing.JFrame implements ActionListener {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Functions">
-    public void BuildGameBoardButtons() {
+    public void BuildGameBoardButtons(MainForm this) {
         //Iterates through the entire 2D Board array
         for (int x = 0; x < board.length; x++) {
             for (int y = 0; y < board[x].length; y++) {
@@ -147,20 +149,22 @@ public class MainForm extends javax.swing.JFrame implements ActionListener {
                 //Builds button at provided screen position
                 board[x][y] = JFrame.BuildJTextField("", this, 30, 20, xPos, yPos, layout, this);
 
-                //Adds listener to button to handle colour changes when pressed.
-                board[x][y].addActionListener(new ActionListener() {
+                int finalX = x;
+                int finalY = y;
+                board[x][y].addMouseListener(new MouseAdapter() {
                     @Override
-                    public void actionPerformed(ActionEvent actionEvent) {
-                        //Stores the pressed button so it can be referenced
-                        JButton source = (JButton) actionEvent.getSource();
+                    public void mouseClicked(MouseEvent e) {
+                        super.mousePressed(e);
 
-                        //If colour of current button is not still on white(already used), returns out of method.
-                        if (source.getBackground() != Color.white) {
-                        }
+                        txtRecordLevel.setText(board[finalX][finalY].getText());
                     }
                 });
             }
         }
+    }
+
+    public void mouseClicked(MouseEvent e){
+
     }
 
     public JButton BuildAButton(int xPos, int yPos) {
@@ -181,17 +185,7 @@ public class MainForm extends javax.swing.JFrame implements ActionListener {
         JOptionPane.showMessageDialog(null, InfoMessage, "Warning!" + TitleBar, JOptionPane.WARNING_MESSAGE);
     }
 
-    public void mouseClicked(MouseEvent e){
-        for (int x = 0; x < board.length; x++){
-            for (int y = 0; y < board[x].length; y++){
 
-                if (e.getClickCount() == MouseEvent.MOUSE_CLICKED){
-
-                    txtRecordLevel.setText(board[x][y].getText());
-                }
-            }
-        }
-    }
 
     //</editor-fold>
 
@@ -641,5 +635,6 @@ public class MainForm extends javax.swing.JFrame implements ActionListener {
             FileManager.SaveToDATFile(filePath, data);
         }
     }
+    //</editor-fold>
+
 }
-//</editor-fold>
