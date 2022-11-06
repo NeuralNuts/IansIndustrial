@@ -1,6 +1,8 @@
 package MainFormFrame;
 
 //<editor-fold defaultstate="collapsed" desc="Imports">
+import org.w3c.dom.Text;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -96,7 +98,7 @@ public class FileManager {
 
             raf.seek(0);
             raf.writeUTF(data.WarehouseName);
-            raf.seek(20);
+            raf.seek(18);
             raf.writeUTF(data.Date);
             raf.seek(20);
             raf.writeUTF(data.Time);
@@ -111,7 +113,7 @@ public class FileManager {
                     int start = counter * 50 + 100;
                     raf.seek(start);
                     raf.writeInt(x);
-                    raf.seek(start + 10);
+                    raf.seek(start + 18);
                     raf.writeInt(y);
                     raf.seek(start + 20);
                     raf.writeUTF(data.WarehouseLayout[x][y].getText());
@@ -212,29 +214,38 @@ public class FileManager {
             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
             StringBuilder builder = new StringBuilder();
 
-            int cords =0;
             Color current_color = Color.black;
             for (int i = 0; i < data.WarehouseLayout[0].length; i++){
 
-                int x = i % data.WarehouseLayout[i].length;
-                int y = i / data.WarehouseLayout[i].length;
-                Color color = data.WarehouseLayout[x][y].getBackground();
+               for (int j = 0; j < data.WarehouseLayout[i].length; j++){
 
-                if(current_color != color){
-                    builder.append(x);
-                    builder.append(",");
-                    builder.append(y);
-                    builder.append(",");
-                    builder.append("\r\n");
-                    builder.append(TextFieldColorGetter(color));
-                }
+                   Color color = data.WarehouseLayout[j][i].getBackground();
+//                   int x = j % data.WarehouseLayout[i].length;
+//                   int y = j / data.WarehouseLayout[i].length;
+
+                   if (current_color == color){
+
+                       continue;
+                   }
+                   else if(i + j > 0 ) {
+
+                           builder.append(j);
+                           builder.append(",");
+                           builder.append(i);
+                           builder.append(TextFieldColorGetter(current_color));
+                           builder.append("\r\n");
+
+                       current_color = color;
+                   }
+               }
+               current_color = Color.black;
+               writer.write(builder.toString());
+               writer.newLine();
             }
-            writer.write(builder.toString());
             writer.close();
         }
         catch (Exception e){
         }
-
     }
     //</editor-fold>
 

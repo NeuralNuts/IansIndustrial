@@ -271,7 +271,8 @@ public class MainForm extends javax.swing.JFrame implements ActionListener {
                     if (d) {
                         board[x][y].setBackground(Color.red);
                         board[x][y].setForeground(Color.red);
-                    } else {
+                    }
+                    else {
                         //board[x][y].setBackground(Color.red);
                         //board[x][y].setForeground(Color.red);
                     }
